@@ -6,13 +6,42 @@ function Table({ data }) {
     const [users, setUsers] = useState([]);
     const [nameSort, setNameSort] = useState(null);
 
-    // nameSort
-    // null = not sorted
-    // ascending
-    // descending
+    function compareAscending(a, b) {
+        const userA = a.name.first.toUpperCase();
+        const userB = b.name.first.toUpperCase();
+      
+        let comparison = 0;
+        if (userA > userB) {
+          comparison = 1;
+        } else if (userA < userB) {
+          comparison = -1;
+        }
+        return comparison;
+    }
+
+    function compareDescending(a, b) {
+        const userA = a.name.first.toUpperCase();
+        const userB = b.name.first.toUpperCase();
+      
+        let comparison = 0;
+        if (userA < userB) {
+          comparison = 1;
+        } else if (userA > userB) {
+          comparison = -1;
+        }
+        return comparison;
+    }
+
     useEffect(() => {
-        console.log("nameSort changed: ", nameSort);
-        
+        if (!data) { return }
+
+        if (!nameSort) {
+            setUsers(data.results);
+        } else if (nameSort === "ascending") {
+            setUsers([...users].sort(compareAscending))
+        } else if (nameSort === "descending") {
+            setUsers([...users].sort(compareDescending))
+        }
     }, [nameSort]);
 
     useEffect(() => {
