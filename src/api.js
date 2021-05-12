@@ -1,7 +1,9 @@
 
-function getEmployees() {
-    fetch ('https://randomuser.me/api/?results=5000') 
+
+async function getEmployees() {
+  return await fetch ('https://randomuser.me/api/?results=10') 
     .then (response => response.json())
-    .then (data => console.log(data))
+  
 }
-getEmployees()
+
+export default getEmployees;
