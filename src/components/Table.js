@@ -5,6 +5,7 @@ import React, { useState, useEffect } from 'react';
 function Table({ data }) {
     const [users, setUsers] = useState([]);
     const [nameSort, setNameSort] = useState(null);
+    const [genderFilter, setGenderFilter] = useState(null);
 
     function compareAscending(a, b) {
         const userA = a.name.first.toUpperCase();
@@ -50,6 +51,7 @@ function Table({ data }) {
         }
     }, [data]);
 
+    
     function handleNameSort() {
         if (!nameSort) {
             setNameSort("ascending");
@@ -60,8 +62,42 @@ function Table({ data }) {
         }
     }
 
+    // gender filter
+ 
+    useEffect(() => {
+        if (!data) { return }
+
+        if (!genderFilter) {
+            setUsers(data.results);
+        } else if (genderFilter === "female") {
+            setUsers([...data.results].filter(user => user.gender === "female"))
+        } else if (genderFilter === "male") {
+            setUsers([...data.results].filter(user => user.gender === "male"))
+        }
+        console.log(genderFilter)
+    }, [genderFilter]);
+
+    useEffect(() => {
+        if (data) {
+            setUsers(data.results);
+        }
+    }, [data]);
+
+
+
+    function filterGender() {
+        if (!genderFilter) {
+            setGenderFilter("female");
+        } else if (genderFilter === "female") {
+            setGenderFilter("male");
+        } else if (genderFilter === "male") {
+            setGenderFilter(null)
+        }
+    }
     return (
         <div>
+            <p>*Click on "Name" to sort Alphabetically*</p>
+            <button onClick={filterGender}>Filter Gender</button>
             <table style={{width: "100%"}}>
                 <tr>
                     <th onClick={handleNameSort}>
